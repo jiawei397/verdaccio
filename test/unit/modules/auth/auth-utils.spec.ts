@@ -65,8 +65,8 @@ describe('Auth utilities', () => {
     return token;
   }
 
-  const verifyJWT = (token: string, user: string, password: string, secret: string) => {
-    const payload = verifyPayload(token, secret);
+  const verifyJWT = async (token: string, user: string, password: string, secret: string) => {
+    const payload = await verifyPayload(token, secret);
     expect(payload.name).toBe(user);
     expect(payload.groups).toBeDefined();
     expect(payload.real_groups).toBeDefined();

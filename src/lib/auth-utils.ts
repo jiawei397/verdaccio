@@ -207,9 +207,9 @@ export function parseAESCredentials(authorizationHeader: string, secret: string)
 
 export const expireReasons: string[] = ['JsonWebTokenError', 'TokenExpiredError'];
 
-export function verifyJWTPayload(token: string, secret: string): RemoteUser {
+export async function verifyJWTPayload(token: string, secret: string): RemoteUser {
   try {
-    const payload: RemoteUser = verifyPayload(token, secret);
+    const payload: RemoteUser = await verifyPayload(token, secret);
 
     return payload;
   } catch (error) {
@@ -229,7 +229,7 @@ export function isAuthHeaderValid(authorization: string): boolean {
   return authorization.split(' ').length === 2;
 }
 
-export function getMiddlewareCredentials(security: Security, secret: string, authorizationHeader: string): AuthMiddlewarePayload {
+export async function getMiddlewareCredentials(security: Security, secret: string, authorizationHeader: string): Promise<AuthMiddlewarePayload> {
   if (isAESLegacy(security)) {
     const credentials = parseAESCredentials(authorizationHeader, secret);
     if (!credentials) {

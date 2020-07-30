@@ -287,7 +287,7 @@ class Auth implements IAuth {
       }
     }
 
-    return (req: $RequestExtend, res: $ResponseExtend, _next: NextFunction): void => {
+    return async (req: $RequestExtend, res: $ResponseExtend, _next: NextFunction): Promise<void> => {
       req.pause();
 
       const next = function (err: VerdaccioError | void): void {
@@ -324,15 +324,15 @@ class Auth implements IAuth {
 
       if (isAESLegacy(security)) {
         this.logger.trace('api middleware using legacy auth token');
-        this._handleAESMiddleware(req, security, secret, authorization, next);
+        await this._handleAESMiddleware(req, security, secret, authorization, next);
       } else {
         this.logger.trace('api middleware using JWT auth token');
-        this._handleJWTAPIMiddleware(req, security, secret, authorization, next);
+        await this._handleJWTAPIMiddleware(req, security, secret, authorization, next);
       }
     };
   }
 
-  private _handleJWTAPIMiddleware(req: $RequestExtend, security: Security, secret: string, authorization: string, next: Function): void {
+  private async _handleJWTAPIMiddleware(req: $RequestExtend, security: Security, secret: string, authorization: string, next: Function): Promise<void> {
     const { scheme, token } = parseAuthTokenHeader(authorization);
     if (scheme.toUpperCase() === TOKEN_BASIC.toUpperCase()) {
       // this should happen when client tries to login with an existing user
@@ -353,7 +353,7 @@ class Auth implements IAuth {
       );
     } else {
       // jwt handler
-      const credentials: any = getMiddlewareCredentials(security, secret, authorization);
+      const credentials: any = await getMiddlewareCredentials(security, secret, authorization);
       if (credentials) {
         // if the signature is valid we rely on it
         req.remote_user = credentials;
@@ -365,8 +365,8 @@ class Auth implements IAuth {
     }
   }
 
-  private _handleAESMiddleware(req: $RequestExtend, security: Security, secret: string, authorization: string, next: Function): void {
-    const credentials: any = getMiddlewareCredentials(security, secret, authorization);
+  private async _handleAESMiddleware(req: $RequestExtend, security: Security, secret: string, authorization: string, next: Function): Promise<void> {
+    const credentials: any = await getMiddlewareCredentials(security, secret, authorization);
     if (credentials) {
       const { user, password } = credentials;
       this.authenticate(
@@ -396,7 +396,7 @@ class Auth implements IAuth {
    * JWT middleware for WebUI
    */
   public webUIJWTmiddleware(): Function {
-    return (req: $RequestExtend, res: $ResponseExtend, _next: NextFunction): void => {
+    return async (req: $RequestExtend, res: $ResponseExtend, _next: NextFunction): Promise<void> => {
       if (this._isRemoteUserMissing(req.remote_user)) {
         return _next();
       }
@@ -428,7 +428,7 @@ class Auth implements IAuth {
 
       let credentials;
       try {
-        credentials = verifyJWTPayload(token, this.config.secret);
+        credentials = await verifyJWTPayload(token, this.config.secret);
       } catch (err) {
         // FIXME: intended behaviour, do we want it?
       }
