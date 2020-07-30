@@ -3,9 +3,9 @@ import util from 'util';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const LoggerApi = require('./logger');
-const client = redis.createClient(6379, '192.168.21.176');
-
+let client;
 let logger;
+
 const getLogger = function () {
     if (!logger) {
         logger = LoggerApi.logger.child({ sub: 'db' });
@@ -13,15 +13,23 @@ const getLogger = function () {
     return logger;
 };
 
-client.on('connect', function () {
-    getLogger().info(`redis connected!`);
-});
+export const connectDb = function (host: string, port: number) {
+    client = redis.createClient(port, host);
+    client.on('connect', function () {
+        getLogger().info(`redis connected!`);
+    });
 
-client.on('error', function () {
-    getLogger().error(`redis error!`);
-});
+    client.on('error', function (err: Error) {
+        getLogger().fatal(`redis error! ${err.message}`);
+        process.exit(1);
+    });
+}
 
 export default {
-    get: util.promisify(client.get).bind(client),
-    set: util.promisify(client.set).bind(client)
+    get(...args) {
+        return util.promisify(client.get).apply(client, args);
+    },
+    set(...args) {
+        return util.promisify(client.set).apply(client, args);
+    }
 }
