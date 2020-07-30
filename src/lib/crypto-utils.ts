@@ -1,6 +1,6 @@
 import { createDecipher, createCipher, createHash, pseudoRandomBytes, Hash } from 'crypto';
-import jwt from 'jsonwebtoken';
 
+import jwt from 'jsonwebtoken';
 import { JWTSignOptions, RemoteUser } from '@verdaccio/types';
 
 export const defaultAlgorithm = 'aes192';
@@ -51,8 +51,30 @@ export function generateRandomHexString(length = 8): string {
   return pseudoRandomBytes(length).toString('hex');
 }
 
+const map = new Map();
+
+export async function signToken(tk: string, secretOrPrivateKey: string, options: JWTSignOptions): Promise<string> {
+  return new Promise(function (resolve, reject): Promise<string> {
+    return jwt.sign(
+      {tk},
+      secretOrPrivateKey,
+      {
+        notBefore: '1', // Make sure the time will not rollback :)
+        ...options,
+      },
+      (error, token) => {
+        if (error) {
+          reject(error)
+        } else {
+          resolve(token);
+        }
+      }
+    );
+  });
+}
+
 export async function signPayload(payload: RemoteUser, secretOrPrivateKey: string, options: JWTSignOptions): Promise<string> {
-  return new Promise(function(resolve, reject): Promise<string> {
+  return new Promise(function (resolve, reject): Promise<string> {
     return jwt.sign(
       payload,
       secretOrPrivateKey,
@@ -60,11 +82,32 @@ export async function signPayload(payload: RemoteUser, secretOrPrivateKey: strin
         notBefore: '1', // Make sure the time will not rollback :)
         ...options,
       },
-      (error, token) => (error ? reject(error) : resolve(token))
+      async (error, token) => {
+        if (error) {
+          reject(error)
+        } else {
+          // const hash = stringToMD5(token);
+
+          const md5Tk: string = stringToMD5(token);
+          const finalToken: string = await signToken(md5Tk, secretOrPrivateKey, options);
+          // console.log(finalToken);
+          // console.log(finalToken.length);
+
+          map.set(finalToken, token);
+          // resolve(token);
+          resolve(finalToken);
+        }
+      }
     );
   });
 }
 
-export function verifyPayload(token: string, secretOrPrivateKey: string): RemoteUser {
+export function verifyPayload(finalToken: string, secretOrPrivateKey: string): RemoteUser {
+  // console.log("-------verify-------", finalToken)
+  const token = map.get(finalToken);
+  if (!token) {
+    throw new Error('未找到token by ' + finalToken);
+  }
+  // const md5Tk = jwt.verify(token, secretOrPrivateKey);
   return jwt.verify(token, secretOrPrivateKey);
 }
