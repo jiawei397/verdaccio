@@ -1,14 +1,24 @@
 import redis from 'redis';
 import util from 'util';
 
-const client = redis.createClient(6379, '192.168.21.176');
-
 /* eslint-disable @typescript-eslint/no-var-requires */
 const LoggerApi = require('./logger');
+const client = redis.createClient(6379, '192.168.21.176');
+
+let logger;
+const getLogger = function () {
+    if (!logger) {
+        logger = LoggerApi.logger.child({ sub: 'db' });
+    }
+    return logger;
+};
 
 client.on('connect', function () {
-    const logger = LoggerApi.logger.child({ sub: 'db' });
-    logger.info(`redis connected!`);
+    getLogger().info(`redis connected!`);
+});
+
+client.on('error', function () {
+    getLogger().error(`redis error!`);
 });
 
 export default {
