@@ -13,8 +13,11 @@ const getLogger = function () {
     return logger;
 };
 
-export const connectDb = function (host: string, port: number) {
-    client = redis.createClient(port, host);
+export const connectDb = function (host: string, port: number, password?: any) {
+    // console.log(host, '-------', port, '--------', password)
+    client = redis.createClient(port, host, password === undefined ? undefined : {
+        auth_pass: password
+    });
     client.on('connect', function () {
         getLogger().info(`redis connected!`);
     });

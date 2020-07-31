@@ -41,10 +41,12 @@ function startVerdaccio(config: any, cliListen: string, configPath: string, pkgV
     displayExperimentsInfoBox(config.experiments);
   }
 
+  // console.log(config.redis);
   { // 连接db
     const host = (config.redis && config.redis.host) || '';
     const port = (config.redis && config.redis.port) || 0;
-    connectDb(host, port);
+    const password = config.redis && config.redis.password;
+    connectDb(host, port, password);
   }
 
   endPointAPI(config).then(
