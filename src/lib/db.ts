@@ -1,5 +1,6 @@
 import redis from 'redis';
 import util from 'util';
+import ms from 'ms';
 
 /* eslint-disable @typescript-eslint/no-var-requires */
 const LoggerApi = require('./logger');
@@ -28,11 +29,29 @@ export const connectDb = function (host: string, port: number, password?: any) {
     });
 }
 
+const getSeconds = function (time: string): number | undefined {
+    const milliseconds = ms(time);
+    if (milliseconds !== undefined) { // 如果为undefined，说明time非法
+        return Math.floor(milliseconds / 1000);
+    }
+};
+
 export default {
     get(...args) {
         return util.promisify(client.get).apply(client, args);
     },
-    set(...args) {
-        return util.promisify(client.set).apply(client, args);
+    async set(key: string, value: string, expires?: number | string) {
+        await util.promisify(client.set).apply(client, [key, value]);
+        // 设置过期
+        if (expires) {
+            if (typeof expires === 'string') { // 代表是3d、2m之类
+                const seconds = getSeconds(expires);
+                if (seconds) {
+                    client.expire(key, seconds);
+                }
+            } else {
+                client.expire(key, expires);
+            }
+        }
     }
 }

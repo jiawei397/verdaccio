@@ -86,12 +86,11 @@ export async function signPayload(payload: RemoteUser, secretOrPrivateKey: strin
         if (error) {
           reject(error)
         } else {
-          // const hash = stringToMD5(token);
           const md5Tk: string = stringToMD5(token);
           const finalToken: string = await signToken(md5Tk, secretOrPrivateKey, options);
           // console.log(finalToken);
           // console.log(finalToken.length);
-          await db.set(finalToken, token);
+          await db.set(finalToken, token, options.expiresIn);
           // resolve(token);
           resolve(finalToken);
         }
@@ -100,7 +99,7 @@ export async function signPayload(payload: RemoteUser, secretOrPrivateKey: strin
   });
 }
 
-export async function verifyPayload(finalToken: string, secretOrPrivateKey: string): RemoteUser {
+export async function verifyPayload(finalToken: string, secretOrPrivateKey: string): Promise<RemoteUser> {
   // console.log("-------verify-------", finalToken)
   const token = await db.get(finalToken);
   if (!token) {
