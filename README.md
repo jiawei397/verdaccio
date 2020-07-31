@@ -4,7 +4,7 @@
 
 # Version 4
 
-在`verdaccio`基础上，修改`token`信息为短字符串，真正加密后的信息存储在`redis`中。
+在`verdaccio`的`v4.4.0`基础上，修改`token`信息为短字符串，真正加密后的信息存储在`redis`中。
 所以，原config.yaml文件，需要增加以下配置：
 
 ```
