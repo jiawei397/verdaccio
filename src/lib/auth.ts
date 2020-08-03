@@ -449,7 +449,7 @@ class Auth implements IAuth {
   public async jwtEncrypt(user: RemoteUser, signOptions: JWTSignOptions): Promise<string> {
     const { real_groups, name, groups } = user;
     const realGroupsValidated = _.isNil(real_groups) ? [] : real_groups;
-    const groupedGroups = _.isNil(groups) ? [] : _.uniq(groups.concat(realGroupsValidated));
+    const groupedGroups = _.isNil(groups) ? real_groups : _.uniq(groups.concat(realGroupsValidated));
     const payload: RemoteUser = {
       real_groups: realGroupsValidated,
       name,
