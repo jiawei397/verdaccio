@@ -11,6 +11,7 @@ import { API_ERROR, certPem, csrPem, keyPem } from './constants';
 
 import { Callback, ConfigWithHttps, HttpsConfKeyCert, HttpsConfPfx } from '@verdaccio/types';
 import { Application } from 'express';
+import { connectDb } from './db';
 
 const logger = require('./logger');
 
@@ -39,6 +40,14 @@ function startVerdaccio(config: any, cliListen: string, configPath: string, pkgV
 
   if ('experiments' in config) {
     displayExperimentsInfoBox(config.experiments);
+  }
+
+  // console.log(config.redis);
+  { // 连接db
+    const host = (config.redis && config.redis.host) || '';
+    const port = (config.redis && config.redis.port) || 0;
+    const password = config.redis && config.redis.password;
+    connectDb(host, port, password);
   }
 
   endPointAPI(config).then(

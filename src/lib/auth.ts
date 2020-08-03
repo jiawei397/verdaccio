@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { VerdaccioError } from '@verdaccio/commons-api';
-
-import {API_ERROR, SUPPORT_ERRORS, TOKEN_BASIC, TOKEN_BEARER} from './constants';
 import loadPlugin from '../lib/plugin-loader';
+
+import { API_ERROR, SUPPORT_ERRORS, TOKEN_BASIC, TOKEN_BEARER } from './constants';
 import { aesEncrypt, signPayload } from './crypto-utils';
 import {
   getDefaultPlugins,
@@ -66,36 +66,36 @@ class Auth implements IAuth {
   public changePassword(username: string, password: string, newPassword: string, cb: Callback): void {
     const validPlugins = _.filter(this.plugins, plugin => _.isFunction(plugin.changePassword));
 
-		if (_.isEmpty(validPlugins)) {
-			return cb(ErrorCode.getInternalError(SUPPORT_ERRORS.PLUGIN_MISSING_INTERFACE));
-		}
+    if (_.isEmpty(validPlugins)) {
+      return cb(ErrorCode.getInternalError(SUPPORT_ERRORS.PLUGIN_MISSING_INTERFACE));
+    }
 
-		for (const plugin of validPlugins) {
-			if (_.isNil(plugin) || _.isFunction(plugin.changePassword) === false) {
-				this.logger.trace('auth plugin does not implement changePassword, trying next one');
-				continue;
-			} else {
-				this.logger.trace({username}, 'updating password for @{username}');
-				plugin.changePassword!(
-					username,
-					password,
-					newPassword,
-					(err, profile): void => {
-						if (err) {
-							this.logger.error(
-								{username, err},
-								`An error has been produced
+    for (const plugin of validPlugins) {
+      if (_.isNil(plugin) || _.isFunction(plugin.changePassword) === false) {
+        this.logger.trace('auth plugin does not implement changePassword, trying next one');
+        continue;
+      } else {
+        this.logger.trace({ username }, 'updating password for @{username}');
+        plugin.changePassword!(
+          username,
+          password,
+          newPassword,
+          (err, profile): void => {
+            if (err) {
+              this.logger.error(
+                { username, err },
+                `An error has been produced
             updating the password for @{username}. Error: @{err.message}`
-							);
-							return cb(err);
-						}
+              );
+              return cb(err);
+            }
 
-						this.logger.trace({username}, 'updated password for @{username} was successful');
-						return cb(null, profile);
-					}
-				);
-			}
-		}
+            this.logger.trace({ username }, 'updated password for @{username} was successful');
+            return cb(null, profile);
+          }
+        );
+      }
+    }
   }
 
   public authenticate(username: string, password: string, cb: Callback): void {
@@ -109,7 +109,7 @@ class Auth implements IAuth {
       }
 
       self.logger.trace({ username }, 'authenticating @{username}');
-      plugin.authenticate(username, password, function(err, groups): void {
+      plugin.authenticate(username, password, function (err, groups): void {
         if (err) {
           self.logger.trace({ username, err }, 'authenticating for user @{username} failed. Error: @{err.message}');
           return cb(err);
@@ -157,7 +157,7 @@ class Auth implements IAuth {
         next();
       } else {
         // p.add_user() execution
-        plugin[method](user, password, function(err, ok): void {
+        plugin[method](user, password, function (err, ok): void {
           if (err) {
             self.logger.trace({ user, err: err.message }, 'the user @{user} could not being added. Error: @{err}');
             return cb(err);
@@ -189,7 +189,7 @@ class Auth implements IAuth {
         return next();
       }
 
-      plugin.allow_access!(user, pkg, function(err, ok: boolean): void {
+      plugin.allow_access!(user, pkg, function (err, ok: boolean): void {
         if (err) {
           self.logger.trace({ packageName, err }, 'forbidden access for @{packageName}. Error: @{err.message}');
           return callback(err);
@@ -288,10 +288,10 @@ class Auth implements IAuth {
       }
     }
 
-    return (req: $RequestExtend, res: $ResponseExtend, _next: NextFunction): void => {
+    return async (req: $RequestExtend, res: $ResponseExtend, _next: NextFunction): Promise<void> => {
       req.pause();
 
-      const next = function(err: VerdaccioError | void): void {
+      const next = function (err: VerdaccioError | void): void {
         req.resume();
         // uncomment this to reject users with bad auth headers
         // return _next.apply(null, arguments)
@@ -325,15 +325,15 @@ class Auth implements IAuth {
 
       if (isAESLegacy(security)) {
         this.logger.trace('api middleware using legacy auth token');
-        this._handleAESMiddleware(req, security, secret, authorization, next);
+        await this._handleAESMiddleware(req, security, secret, authorization, next);
       } else {
         this.logger.trace('api middleware using JWT auth token');
-        this._handleJWTAPIMiddleware(req, security, secret, authorization, next);
+        await this._handleJWTAPIMiddleware(req, security, secret, authorization, next);
       }
     };
   }
 
-  private _handleJWTAPIMiddleware(req: $RequestExtend, security: Security, secret: string, authorization: string, next: Function): void {
+  private async _handleJWTAPIMiddleware(req: $RequestExtend, security: Security, secret: string, authorization: string, next: Function): Promise<void> {
     const { scheme, token } = parseAuthTokenHeader(authorization);
     if (scheme.toUpperCase() === TOKEN_BASIC.toUpperCase()) {
       // this should happen when client tries to login with an existing user
@@ -354,7 +354,7 @@ class Auth implements IAuth {
       );
     } else {
       // jwt handler
-      const credentials: any = getMiddlewareCredentials(security, secret, authorization);
+      const credentials: any = await getMiddlewareCredentials(security, secret, authorization);
       if (credentials) {
         // if the signature is valid we rely on it
         req.remote_user = credentials;
@@ -366,8 +366,8 @@ class Auth implements IAuth {
     }
   }
 
-  private _handleAESMiddleware(req: $RequestExtend, security: Security, secret: string, authorization: string, next: Function): void {
-    const credentials: any = getMiddlewareCredentials(security, secret, authorization);
+  private async _handleAESMiddleware(req: $RequestExtend, security: Security, secret: string, authorization: string, next: Function): Promise<void> {
+    const credentials: any = await getMiddlewareCredentials(security, secret, authorization);
     if (credentials) {
       const { user, password } = credentials;
       this.authenticate(
@@ -397,7 +397,7 @@ class Auth implements IAuth {
    * JWT middleware for WebUI
    */
   public webUIJWTmiddleware(): Function {
-    return (req: $RequestExtend, res: $ResponseExtend, _next: NextFunction): void => {
+    return async (req: $RequestExtend, res: $ResponseExtend, _next: NextFunction): Promise<void> => {
       if (this._isRemoteUserValid(req.remote_user)) {
         return _next();
       }
@@ -429,7 +429,7 @@ class Auth implements IAuth {
 
       let credentials;
       try {
-        credentials = verifyJWTPayload(token, this.config.secret);
+        credentials = await verifyJWTPayload(token, this.config.secret);
       } catch (err) {
         // FIXME: intended behaviour, do we want it?
       }
@@ -449,7 +449,7 @@ class Auth implements IAuth {
   public async jwtEncrypt(user: RemoteUser, signOptions: JWTSignOptions): Promise<string> {
     const { real_groups, name, groups } = user;
     const realGroupsValidated = _.isNil(real_groups) ? [] : real_groups;
-    const groupedGroups = _.isNil(groups) ? real_groups : groups.concat(realGroupsValidated);
+    const groupedGroups = _.isNil(groups) ? [] : _.uniq(groups.concat(realGroupsValidated));
     const payload: RemoteUser = {
       real_groups: realGroupsValidated,
       name,

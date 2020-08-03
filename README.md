@@ -4,6 +4,16 @@
 
 # Version 4
 
+在`verdaccio`的`v4.8.0`基础上，修改`token`信息为短字符串，真正加密后的信息存储在`redis`中。
+所以，原config.yaml文件，需要增加以下配置：
+
+```
+redis:
+  host: 192.168.21.176
+  port: 6379
+  password: abcd //密码有的话配置，没有就删除此项
+```
+
 [Verdaccio](https://verdaccio.org/) is a simple, **zero-config-required local private npm registry**.
 No need for an entire database just to get started! Verdaccio comes out of the box with
 **its own tiny database**, and the ability to proxy other registries (eg. npmjs.org),
