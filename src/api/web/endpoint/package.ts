@@ -120,7 +120,7 @@ function addPackageWebApi(route: Router, storage: IStorageHandler, auth: IAuth, 
           let sideBarInfo: any = _.clone(info);
           sideBarInfo.versions = convertDistRemoteToLocalTarballUrls(info, req, config.url_prefix).versions;
           if (isVersionValid(info, v)) {
-            sideBarInfo.latest = sideBarInfo.versions[v];
+            sideBarInfo.latest = sideBarInfo.versions[v as string];
             sideBarInfo.latest.author = formatAuthor(sideBarInfo.latest.author);
             } else {
               sideBarInfo.latest = sideBarInfo.versions[info[DIST_TAGS].latest];
