@@ -206,7 +206,7 @@ export function parseAESCredentials(authorizationHeader: string, secret: string)
 
 export const expireReasons: string[] = ['JsonWebTokenError', 'TokenExpiredError'];
 
-export async function verifyJWTPayload(token: string, secret: string): RemoteUser {
+export async function verifyJWTPayload(token: string, secret: string): Promise<RemoteUser> {
   try {
     const payload: RemoteUser = await verifyPayload(token, secret);
 
