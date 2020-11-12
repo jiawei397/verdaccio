@@ -6,6 +6,7 @@
     "name": "Verdaccio Maintainers",
     "email": "verdaccio.npm@gmail.com"
   },
+  "autoPublish": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/verdaccio/verdaccio"
