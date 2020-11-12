@@ -20,7 +20,9 @@ export default function(express) {
   const publisherInfo: RemoteUser = {
     name: "publisher-name-test",
     real_groups: [],
-    groups: []
+    groups: [],
+    email: 'test@test.com',
+    external: false
   };
 
   describe('notifications', () => {

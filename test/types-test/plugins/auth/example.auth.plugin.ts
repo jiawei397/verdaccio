@@ -86,6 +86,8 @@ const remoteUser: RemoteUser = {
   groups: [],
   real_groups: [],
   name: 'test',
+  email: 'test@test.com',
+  external: false
 };
 
 auth.authenticate('user', 'pass', () => {});

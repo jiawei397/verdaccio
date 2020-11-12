@@ -54,7 +54,9 @@ describe('Auth utilities', () => {
     const user: RemoteUser = {
       name: username,
       real_groups: [],
-      groups: []
+      groups: [],
+      email: 'test@test.com',
+      external: false
     };
     const token = await getApiToken(auth, config, user, password);
     expect(spy).toHaveBeenCalled();

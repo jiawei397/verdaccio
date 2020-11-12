@@ -24,7 +24,9 @@ export default class ExampleMiddlewarePlugin implements IPluginMiddleware<{}> {
     const remoteUser: RemoteUser = {
       groups: [],
       real_groups: [],
-      name: 'test'
+      name: 'test',
+      email: 'test@test.com',
+      external: false
     };
     auth.authenticate('user', 'password', () => {});
     auth.allow_access({packageName: 'packageName'}, remoteUser, () => {});

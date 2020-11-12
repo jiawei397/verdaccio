@@ -16,12 +16,14 @@ export function validatePassword(password: string, minLength: number = DEFAULT_M
  * Create a RemoteUser object
  * @return {Object} { name: xx, pluginGroups: [], real_groups: [] }
  */
-export function createRemoteUser(name: string, pluginGroups: string[]): RemoteUser {
+export function createRemoteUser(name: string, pluginGroups: string[], email: string = '', external: boolean = false): RemoteUser {
   const isGroupValid: boolean = Array.isArray(pluginGroups);
   const groups = (isGroupValid ? pluginGroups : []).concat([ROLES.$ALL, ROLES.$AUTH, ROLES.DEPRECATED_ALL, ROLES.DEPRECATED_AUTH, ROLES.ALL]);
 
   return {
     name,
+    email,
+    external,
     groups,
     real_groups: pluginGroups,
   };
@@ -34,6 +36,8 @@ export function createRemoteUser(name: string, pluginGroups: string[]): RemoteUs
 export function createAnonymousRemoteUser(): RemoteUser {
   return {
     name: undefined,
+    email: '',
+    external: false,
     // groups without '$' are going to be deprecated eventually
     groups: [ROLES.$ALL, ROLES.$ANONYMOUS, ROLES.DEPRECATED_ALL, ROLES.DEPRECATED_ANONYMOUS],
     real_groups: [],
