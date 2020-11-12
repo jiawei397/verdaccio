@@ -6,7 +6,7 @@ import { getMatchedPackagesSpec, normalisePackageAccess, sanityCheckUplinksProps
 import { getUserAgent, isObject } from './utils';
 import { APP_ERROR } from './constants';
 
-import { PackageList, Config as AppConfig, Security, Logger } from '@verdaccio/types';
+import { PackageList, Config as AppConfig, Security, Logger } from '@uino/verdaccio-types';
 
 import { MatchedPackage, StartUpConfig } from '../../types';
 

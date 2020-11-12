@@ -11,7 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "typeRoots": [
-      "./node_modules/@verdaccio/types/lib/verdaccio",
+      "./node_modules/@uino/verdaccio-types/lib/verdaccio",
       "./node_modules/@types",
       "./types/custom.d.ts"
     ]

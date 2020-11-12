@@ -1,11 +1,12 @@
 {
   "name": "uino-verdaccio",
-  "version": "4.8.0",
+  "version": "4.8.1",
   "description": "A lightweight private npm proxy registry",
   "author": {
     "name": "Verdaccio Maintainers",
     "email": "verdaccio.npm@gmail.com"
   },
+  "autoPublish": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/verdaccio/verdaccio"
@@ -73,7 +74,7 @@
     "@typescript-eslint/eslint-plugin": "2.12.0",
     "@verdaccio/babel-preset": "^9.6.1",
     "@verdaccio/eslint-config": "^8.5.0",
-    "@verdaccio/types": "^9.7.0",
+    "@uino/verdaccio-types": "^9.7.0",
     "all-contributors-cli": "6.16.0",
     "codecov": "3.7.0",
     "cross-env": "7.0.2",

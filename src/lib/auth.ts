@@ -19,7 +19,7 @@ import {
 import { convertPayloadToBase64, ErrorCode } from './utils';
 import { getMatchedPackagesSpec } from './config-utils';
 
-import { Config, Logger, Callback, IPluginAuth, RemoteUser, JWTSignOptions, Security, AuthPluginPackage, AllowAccess, PackageAccess } from '@verdaccio/types';
+import { Config, Logger, Callback, IPluginAuth, RemoteUser, JWTSignOptions, Security, AuthPluginPackage, AllowAccess, PackageAccess } from '@uino/verdaccio-types';
 import { NextFunction } from 'express';
 import { $RequestExtend, $ResponseExtend, IAuth, AESPayload } from '../../types';
 
@@ -109,12 +109,13 @@ class Auth implements IAuth {
       }
 
       self.logger.trace({ username }, 'authenticating @{username}');
-      plugin.authenticate(username, password, function (err, groups): void {
+      plugin.authenticate(username, password, function (err, remoteUser: RemoteUser): void {
         if (err) {
           self.logger.trace({ username, err }, 'authenticating for user @{username} failed. Error: @{err.message}');
           return cb(err);
         }
 
+        const groups = remoteUser.real_groups;
         // Expect: SKIP if groups is falsey and not an array
         //         with at least one item (truthy length)
         // Expect: CONTINUE otherwise (will error if groups is not
@@ -133,7 +134,7 @@ class Auth implements IAuth {
           }
 
           self.logger.trace({ username, groups }, 'authentication for user @{username} was successfully. Groups: @{groups}');
-          return cb(err, createRemoteUser(username, groups));
+          return cb(err, createRemoteUser(username, groups, remoteUser.email, remoteUser.external));
         }
         next();
       });
@@ -389,6 +390,7 @@ class Auth implements IAuth {
     }
   }
 
+  // TODO jw 看需不需要校验email和external这俩新加的字段
   private _isRemoteUserValid(remote_user: RemoteUser): boolean {
     return _.isUndefined(remote_user) === false && _.isUndefined(remote_user.name) === false;
   }
@@ -435,9 +437,9 @@ class Auth implements IAuth {
       }
 
       if (this._isRemoteUserValid(credentials)) {
-        const { name, groups } = credentials;
+        const { name, groups, email, external } = credentials;
         // $FlowFixMe
-        req.remote_user = createRemoteUser(name, groups);
+        req.remote_user = createRemoteUser(name, groups, email, external);
       } else {
         req.remote_user = createAnonymousRemoteUser();
       }
@@ -447,12 +449,14 @@ class Auth implements IAuth {
   }
 
   public async jwtEncrypt(user: RemoteUser, signOptions: JWTSignOptions): Promise<string> {
-    const { real_groups, name, groups } = user;
+    const { real_groups, name, groups, email, external } = user;
     const realGroupsValidated = _.isNil(real_groups) ? [] : real_groups;
     const groupedGroups = _.isNil(groups) ? real_groups : _.uniq(groups.concat(realGroupsValidated));
     const payload: RemoteUser = {
       real_groups: realGroupsValidated,
       name,
+      email,
+      external,
       groups: groupedGroups,
     };
 

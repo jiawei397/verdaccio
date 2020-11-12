@@ -18,7 +18,7 @@ import {aesDecrypt, verifyPayload} from '../../../../src/lib/crypto-utils';
 import {parseConfigurationFile} from '../../__helper';
 
 import { IAuth } from '../../../../types';
-import {Config, Security, RemoteUser} from '@verdaccio/types';
+import {Config, Security, RemoteUser} from '@uino/verdaccio-types';
 
 setup([]);
 
@@ -54,7 +54,9 @@ describe('Auth utilities', () => {
     const user: RemoteUser = {
       name: username,
       real_groups: [],
-      groups: []
+      groups: [],
+      email: 'test@test.com',
+      external: false
     };
     const token = await getApiToken(auth, config, user, password);
     expect(spy).toHaveBeenCalled();

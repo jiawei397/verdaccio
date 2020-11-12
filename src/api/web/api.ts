@@ -6,7 +6,7 @@ import addSearchWebApi from './endpoint/search';
 
 import Search from '../../lib/search';
 import { match, validateName, validatePackage, setSecurityWebHeaders } from '../middleware';
-import { Config } from '@verdaccio/types';
+import { Config } from '@uino/verdaccio-types';
 import { IAuth, IStorageHandler } from '../../../types';
 
 const route = Router(); /* eslint new-cap: 0 */

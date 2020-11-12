@@ -7,7 +7,7 @@ import { logger } from '../../../../lib/logger';
 
 import { Response, Router } from 'express';
 import {$NextFunctionVer, $RequestExtend, IAuth, IStorageHandler} from '../../../../../types';
-import { Config, RemoteUser, Token } from '@verdaccio/types';
+import { Config, RemoteUser, Token } from '@uino/verdaccio-types';
 
 export type NormalizeToken = Token & {
 	created: string;

@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { API_ERROR, APP_ERROR, HTTP_STATUS } from '../../../lib/constants';
 
 import { Router, Response, Request } from 'express';
-import { Config, RemoteUser, JWTSignOptions } from '@verdaccio/types';
+import { Config, RemoteUser, JWTSignOptions } from '@uino/verdaccio-types';
 import { IAuth, $NextFunctionVer } from '../../../../types';
 import { ErrorCode } from '../../../lib/utils';
 import { getSecurity, validatePassword } from '../../../lib/auth-utils';

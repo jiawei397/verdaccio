@@ -5,7 +5,7 @@
 import Config from '../../../../src/lib/config';
 import {generatePackageTemplate} from '../../../../src/lib/storage-utils';
 import {readFile} from '../../../functional/lib/test.utils';
-import { Package } from '@verdaccio/types';
+import { Package } from '@uino/verdaccio-types';
 
 const readMetadata = (fileName: string): Package => JSON.parse(readFile(`../../unit/partials/${fileName}`).toString()) as Package;
 
@@ -15,7 +15,7 @@ import {
   IStorageManager,
   RemoteUser,
   IBasicAuth,
-} from '@verdaccio/types';
+} from '@uino/verdaccio-types';
 import { IUploadTarball, IReadTarball } from '@verdaccio/streams';
 import { generateVersion } from "../../../unit/__helper/utils";
 
@@ -24,7 +24,9 @@ export default class ExampleMiddlewarePlugin implements IPluginMiddleware<{}> {
     const remoteUser: RemoteUser = {
       groups: [],
       real_groups: [],
-      name: 'test'
+      name: 'test',
+      email: 'test@test.com',
+      external: false
     };
     auth.authenticate('user', 'password', () => {});
     auth.allow_access({packageName: 'packageName'}, remoteUser, () => {});

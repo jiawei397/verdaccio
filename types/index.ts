@@ -23,7 +23,7 @@ import {
   Token,
   ITokenActions,
   TokenFilter
-} from '@verdaccio/types';
+} from '@uino/verdaccio-types';
 import lunrMutable from 'lunr-mutable-indexes';
 import {NextFunction, Request, Response} from 'express';
 
@@ -46,7 +46,7 @@ export type LegacyPackageAccess = PackageAccess & {
   allow_proxy?: string[];
   allow_access?: string[];
   proxy_access?: string[];
-  // FIXME: should be published on @verdaccio/types
+  // FIXME: should be published on @uino/verdaccio-types
   unpublish?: string[];
 }
 
@@ -133,7 +133,7 @@ export interface IWebSearch {
   configureStorage(storage: IStorageHandler): void;
 }
 
-// FIXME: This prop should be on @verdaccio/types
+// FIXME: This prop should be on @uino/verdaccio-types
 export type UpLinkConfLocal = UpLinkConf & {
   no_proxy?: string;
 };

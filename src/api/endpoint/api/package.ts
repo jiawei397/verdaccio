@@ -3,7 +3,7 @@ import { allow } from '../../middleware';
 import { convertDistRemoteToLocalTarballUrls, getVersion, ErrorCode } from '../../../lib/utils';
 import { HEADERS, DIST_TAGS, API_ERROR } from '../../../lib/constants';
 import { Router } from 'express';
-import { Config, Package } from '@verdaccio/types';
+import { Config, Package } from '@uino/verdaccio-types';
 import { IAuth, $ResponseExtend, $RequestExtend, $NextFunctionVer, IStorageHandler } from '../../../../types';
 
 const downloadStream = (packageName: string, filename: string, storage: any, req: $RequestExtend, res: $ResponseExtend): void => {

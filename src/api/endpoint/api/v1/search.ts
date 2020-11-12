@@ -1,5 +1,5 @@
 import semver from 'semver'
-import { Package } from '@verdaccio/types';
+import { Package } from '@uino/verdaccio-types';
 
 function compileTextSearch(textSearch: string): ((pkg: Package) => boolean) {
         const personMatch = (person, search) => {

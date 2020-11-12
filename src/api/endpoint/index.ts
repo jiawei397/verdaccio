@@ -1,5 +1,5 @@
 import { IAuth, IStorageHandler } from '../../../types';
-import { Config } from '@verdaccio/types';
+import { Config } from '@uino/verdaccio-types';
 import _ from 'lodash';
 
 import express from 'express';

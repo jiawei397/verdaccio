@@ -8,13 +8,13 @@ import {
   Token,
   TokenFilter,
   IUploadTarball, IReadTarball
-} from '@verdaccio/types';
+} from '@uino/verdaccio-types';
 
 import {
   IPluginStorage,
   IPackageStorageManager,
   IPackageStorage
-} from '@verdaccio/types';
+} from '@uino/verdaccio-types';
 import { UploadTarball, ReadTarball} from '@verdaccio/streams';
 
 import Config from '../../../../src/lib/config';

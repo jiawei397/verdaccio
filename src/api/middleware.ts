@@ -4,7 +4,7 @@ import { validateName as utilValidateName, validatePackage as utilValidatePackag
 import { API_ERROR, HEADER_TYPE, HEADERS, HTTP_STATUS, TOKEN_BASIC, TOKEN_BEARER } from '../lib/constants';
 import { stringToMD5 } from '../lib/crypto-utils';
 import { $ResponseExtend, $RequestExtend, $NextFunctionVer, IAuth } from '../../types';
-import { Config, Package, RemoteUser } from '@verdaccio/types';
+import { Config, Package, RemoteUser } from '@uino/verdaccio-types';
 import { logger } from '../lib/logger';
 import { VerdaccioError } from '@verdaccio/commons-api';
 

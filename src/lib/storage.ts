@@ -12,10 +12,10 @@ import { setupUpLinks, updateVersionsHiddenUpLink } from './uplink-util';
 import { mergeVersions } from './metadata-utils';
 import { ErrorCode, normalizeDistTags, validateMetadata, isObject } from './utils';
 import { IStorage, IProxy, IStorageHandler, ProxyList, StringValue, IGetPackageOptions, ISyncUplinks, IPluginFilters } from '../../types';
-import { IReadTarball, IUploadTarball, Versions, Package, Config, MergeTags, Version, DistFile, Callback, Logger } from '@verdaccio/types';
+import { IReadTarball, IUploadTarball, Versions, Package, Config, MergeTags, Version, DistFile, Callback, Logger } from '@uino/verdaccio-types';
 import { hasProxyTo } from './config-utils';
 import { logger } from '../lib/logger';
-import { GenericBody, TokenFilter, Token } from '@verdaccio/types';
+import { GenericBody, TokenFilter, Token } from '@uino/verdaccio-types';
 import { VerdaccioError } from '@verdaccio/commons-api';
 
 class Storage implements IStorageHandler {

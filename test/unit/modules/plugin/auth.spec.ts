@@ -5,7 +5,7 @@ import AppConfig from '../../../../src/lib/config';
 import {setup} from '../../../../src/lib/logger';
 
 import {IAuth} from '../../../../types';
-import {Config} from '@verdaccio/types';
+import {Config} from '@uino/verdaccio-types';
 import { ROLES } from '../../../../src/lib/constants';
 import { getInternalError } from '@verdaccio/commons-api';
 

@@ -27,7 +27,7 @@ import {
   CallbackAction,
   onSearchPackage,
   onEndSearchPackage, StorageUpdateCallback,
-} from '@verdaccio/types';
+} from '@uino/verdaccio-types';
 import { IStorage, StringValue } from '../../types';
 import { VerdaccioError } from '@verdaccio/commons-api';
 

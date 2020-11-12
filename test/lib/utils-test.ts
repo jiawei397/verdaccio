@@ -1,4 +1,4 @@
-import { Version } from "@verdaccio/types";
+import { Version } from "@uino/verdaccio-types";
 
 export function generateNewVersion(
   pkgName: string,

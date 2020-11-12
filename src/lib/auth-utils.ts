@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { convertPayloadToBase64, ErrorCode } from './utils';
 import { API_ERROR, HTTP_STATUS, ROLES, TIME_EXPIRATION_7D, TOKEN_BASIC, TOKEN_BEARER, DEFAULT_MIN_LIMIT_PASSWORD } from './constants';
 
-import { RemoteUser, Package, Callback, Config, Security, APITokenOptions, JWTOptions, IPluginAuth } from '@verdaccio/types';
+import { RemoteUser, Package, Callback, Config, Security, APITokenOptions, JWTOptions, IPluginAuth } from '@uino/verdaccio-types';
 import { CookieSessionToken, IAuthWebUI, AuthMiddlewarePayload, AuthTokenHeader, BasicPayload } from '../../types';
 import { aesDecrypt, verifyPayload } from './crypto-utils';
 
@@ -16,12 +16,14 @@ export function validatePassword(password: string, minLength: number = DEFAULT_M
  * Create a RemoteUser object
  * @return {Object} { name: xx, pluginGroups: [], real_groups: [] }
  */
-export function createRemoteUser(name: string, pluginGroups: string[]): RemoteUser {
+export function createRemoteUser(name: string, pluginGroups: string[], email: string = '', external: boolean = false): RemoteUser {
   const isGroupValid: boolean = Array.isArray(pluginGroups);
   const groups = (isGroupValid ? pluginGroups : []).concat([ROLES.$ALL, ROLES.$AUTH, ROLES.DEPRECATED_ALL, ROLES.DEPRECATED_AUTH, ROLES.ALL]);
 
   return {
     name,
+    email,
+    external,
     groups,
     real_groups: pluginGroups,
   };
@@ -34,6 +36,8 @@ export function createRemoteUser(name: string, pluginGroups: string[]): RemoteUs
 export function createAnonymousRemoteUser(): RemoteUser {
   return {
     name: undefined,
+    email: '',
+    external: false,
     // groups without '$' are going to be deprecated eventually
     groups: [ROLES.$ALL, ROLES.$ANONYMOUS, ROLES.DEPRECATED_ALL, ROLES.DEPRECATED_ANONYMOUS],
     real_groups: [],
@@ -91,7 +95,7 @@ export function getDefaultPlugins(): IPluginAuth<Config> {
       return cb(ErrorCode.getConflict(API_ERROR.BAD_USERNAME_PASSWORD));
     },
 
-    // FIXME: allow_action and allow_publish should be in the @verdaccio/types
+    // FIXME: allow_action and allow_publish should be in the @uino/verdaccio-types
     // @ts-ignore
     allow_access: allow_action('access'),
     // @ts-ignore

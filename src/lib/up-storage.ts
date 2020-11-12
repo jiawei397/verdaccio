@@ -7,7 +7,7 @@ import URL, {UrlWithStringQuery} from 'url';
 import { parseInterval, isObject, ErrorCode, buildToken } from './utils';
 import { ReadTarball } from '@verdaccio/streams';
 import { ERROR_CODE, TOKEN_BASIC, TOKEN_BEARER, HEADERS, HTTP_STATUS, API_ERROR, HEADER_TYPE, CHARACTER_ENCODING } from './constants';
-import { Config, Callback, Headers, Logger, Package } from '@verdaccio/types';
+import { Config, Callback, Headers, Logger, Package } from '@uino/verdaccio-types';
 import { IProxy, UpLinkConfLocal } from '../../types';
 const LoggerApi = require('./logger');
 

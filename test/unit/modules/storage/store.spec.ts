@@ -7,7 +7,7 @@ import AppConfig from '../../../../src/lib/config';
 import Storage from '../../../../src/lib/storage';
 import {setup} from '../../../../src/lib/logger';
 
-import {Config} from '@verdaccio/types';
+import {Config} from '@uino/verdaccio-types';
 import {IStorageHandler} from '../../../../types';
 import {API_ERROR, HTTP_STATUS} from '../../../../src/lib/constants';
 import {mockServer} from '../../__helper/mock';

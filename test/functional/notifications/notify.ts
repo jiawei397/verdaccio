@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {HEADERS} from '../../../src/lib/constants';
 import {notify} from '../../../src/lib/notify';
 import {DOMAIN_SERVERS, PORT_SERVER_APP} from '../config.functional';
-import { RemoteUser } from '@verdaccio/types';
+import { RemoteUser } from '@uino/verdaccio-types';
 
 export default function(express) {
   const config = {
@@ -20,7 +20,9 @@ export default function(express) {
   const publisherInfo: RemoteUser = {
     name: "publisher-name-test",
     real_groups: [],
-    groups: []
+    groups: [],
+    email: 'test@test.com',
+    external: false
   };
 
   describe('notifications', () => {

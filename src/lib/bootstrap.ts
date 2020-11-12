@@ -9,7 +9,7 @@ import endPointAPI from '../api/index';
 import { getListListenAddresses, resolveConfigPath } from './cli/utils';
 import { API_ERROR, certPem, csrPem, keyPem } from './constants';
 
-import { Callback, ConfigWithHttps, HttpsConfKeyCert, HttpsConfPfx } from '@verdaccio/types';
+import { Callback, ConfigWithHttps, HttpsConfKeyCert, HttpsConfPfx } from '@uino/verdaccio-types';
 import { Application } from 'express';
 import { connectDb } from './db';
 

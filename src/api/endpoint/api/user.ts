@@ -6,7 +6,7 @@ import { API_ERROR, API_MESSAGE, HTTP_STATUS } from '../../../lib/constants';
 import { createRemoteUser, createSessionToken, getApiToken, getAuthenticatedMessage, validatePassword } from '../../../lib/auth-utils';
 import { logger } from '../../../lib/logger';
 
-import { Config, RemoteUser } from '@verdaccio/types';
+import { Config, RemoteUser } from '@uino/verdaccio-types';
 import { Response, Router } from 'express';
 import { $RequestExtend, $ResponseExtend, $NextFunctionVer, IAuth } from '../../../../types';
 
@@ -23,13 +23,13 @@ export default function(route: Router, auth: IAuth, config: Config): void {
     const remoteName = req.remote_user.name;
 
     if (_.isNil(remoteName) === false && _.isNil(name) === false && remoteName === name) {
-      auth.authenticate(name, password, async function callbackAuthenticate(err, user): Promise<void> {
+      auth.authenticate(name, password, async function callbackAuthenticate(err, user: RemoteUser): Promise<void> {
         if (err) {
           logger.trace({ name, err }, 'authenticating for user @{username} failed. Error: @{err.message}');
           return next(ErrorCode.getCode(HTTP_STATUS.UNAUTHORIZED, API_ERROR.BAD_USERNAME_PASSWORD));
         }
 
-        const restoredRemoteUser: RemoteUser = createRemoteUser(name, user.groups || []);
+        const restoredRemoteUser: RemoteUser = createRemoteUser(name, user.groups || [], user.email, user.external);
         const token = await getApiToken(auth, config, restoredRemoteUser, password);
 
         res.status(HTTP_STATUS.CREATED);

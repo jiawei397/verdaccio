@@ -5,7 +5,7 @@ import{ Router } from 'express';
 import{ IAuth, $ResponseExtend, $RequestExtend, $NextFunctionVer, IStorageHandler } from '../../../../types';
 import { API_MESSAGE, HTTP_STATUS, DIST_TAGS } from '../../../lib/constants';
 import { VerdaccioError } from '@verdaccio/commons-api';
-import { Package } from '@verdaccio/types';
+import { Package } from '@uino/verdaccio-types';
 
 export default function(route: Router, auth: IAuth, storage: IStorageHandler): void {
   const can = allow(auth);
