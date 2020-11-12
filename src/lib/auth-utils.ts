@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { convertPayloadToBase64, ErrorCode } from './utils';
 import { API_ERROR, HTTP_STATUS, ROLES, TIME_EXPIRATION_7D, TOKEN_BASIC, TOKEN_BEARER, DEFAULT_MIN_LIMIT_PASSWORD } from './constants';
 
-import { RemoteUser, Package, Callback, Config, Security, APITokenOptions, JWTOptions, IPluginAuth } from '@verdaccio/types';
+import { RemoteUser, Package, Callback, Config, Security, APITokenOptions, JWTOptions, IPluginAuth } from '@uino/verdaccio-types';
 import { CookieSessionToken, IAuthWebUI, AuthMiddlewarePayload, AuthTokenHeader, BasicPayload } from '../../types';
 import { aesDecrypt, verifyPayload } from './crypto-utils';
 
@@ -91,7 +91,7 @@ export function getDefaultPlugins(): IPluginAuth<Config> {
       return cb(ErrorCode.getConflict(API_ERROR.BAD_USERNAME_PASSWORD));
     },
 
-    // FIXME: allow_action and allow_publish should be in the @verdaccio/types
+    // FIXME: allow_action and allow_publish should be in the @uino/verdaccio-types
     // @ts-ignore
     allow_access: allow_action('access'),
     // @ts-ignore

@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { USERS, HTTP_STATUS } from '../../../lib/constants';
 import { Response, Router } from 'express';
 import { $RequestExtend, $NextFunctionVer, IStorageHandler } from '../../../../types';
-import { Package } from '@verdaccio/types';
+import { Package } from '@uino/verdaccio-types';
 
 type Packages = Package[];
 
@@ -19,9 +19,7 @@ export default function(route: Router, storage: IStorageHandler): void {
         return next(err);
       }
 
-      const filteredPackages: Packages = localPackages.filter((localPackage: Package) =>
-        _.keys(localPackage[USERS]).includes(remoteUsername)
-      );
+      const filteredPackages: Packages = localPackages.filter((localPackage: Package) => _.keys(localPackage[USERS]).includes(remoteUsername));
 
       res.status(HTTP_STATUS.OK);
       next({

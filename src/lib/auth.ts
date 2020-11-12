@@ -19,7 +19,7 @@ import {
 import { convertPayloadToBase64, ErrorCode } from './utils';
 import { getMatchedPackagesSpec } from './config-utils';
 
-import { Config, Logger, Callback, IPluginAuth, RemoteUser, JWTSignOptions, Security, AuthPluginPackage, AllowAccess, PackageAccess } from '@verdaccio/types';
+import { Config, Logger, Callback, IPluginAuth, RemoteUser, JWTSignOptions, Security, AuthPluginPackage, AllowAccess, PackageAccess } from '@uino/verdaccio-types';
 import { NextFunction } from 'express';
 import { $RequestExtend, $ResponseExtend, IAuth, AESPayload } from '../../types';
 

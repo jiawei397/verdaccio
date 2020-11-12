@@ -1,4 +1,4 @@
-import { Package } from "@verdaccio/types";
+import { Package } from "@uino/verdaccio-types";
 
 export function generateAttachment() {
 	return {

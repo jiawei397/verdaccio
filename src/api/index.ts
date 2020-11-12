@@ -14,7 +14,7 @@ import AppConfig from '../lib/config';
 import webAPI from './web/api';
 import web from './web';
 import { $ResponseExtend, $RequestExtend, $NextFunctionVer, IStorageHandler, IAuth } from '../../types';
-import { Config as IConfig, IPluginMiddleware, IPluginStorageFilter } from '@verdaccio/types';
+import { Config as IConfig, IPluginMiddleware, IPluginStorageFilter } from '@uino/verdaccio-types';
 import { setup, logger } from '../lib/logger';
 import { log, final, errorReportingMiddleware } from './middleware';
 

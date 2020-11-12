@@ -1,7 +1,7 @@
 import Path from 'path';
 import _ from 'lodash';
 import { logger } from './logger';
-import { Config, IPlugin } from '@verdaccio/types';
+import { Config, IPlugin } from '@uino/verdaccio-types';
 import { MODULE_NOT_FOUND } from './constants';
 
 /**

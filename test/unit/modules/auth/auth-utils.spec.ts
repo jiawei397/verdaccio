@@ -18,7 +18,7 @@ import {aesDecrypt, verifyPayload} from '../../../../src/lib/crypto-utils';
 import {parseConfigurationFile} from '../../__helper';
 
 import { IAuth } from '../../../../types';
-import {Config, Security, RemoteUser} from '@verdaccio/types';
+import {Config, Security, RemoteUser} from '@uino/verdaccio-types';
 
 setup([]);
 

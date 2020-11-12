@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 import { notifyRequest } from './notify-request';
 import { OptionsWithUrl } from 'request';
-import { Config, Package, RemoteUser } from '@verdaccio/types';
+import { Config, Package, RemoteUser } from '@uino/verdaccio-types';
 
 type TemplateMetadata = Package & { publishedPackage: string };
 

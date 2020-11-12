@@ -1,7 +1,7 @@
 import { createDecipher, createCipher, createHash, pseudoRandomBytes, Hash } from 'crypto';
 
 import jwt from 'jsonwebtoken';
-import { JWTSignOptions, RemoteUser } from '@verdaccio/types';
+import { JWTSignOptions, RemoteUser } from '@uino/verdaccio-types';
 
 import db from './db';
 

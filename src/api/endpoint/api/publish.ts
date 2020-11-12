@@ -9,7 +9,7 @@ import { notify } from '../../../lib/notify';
 import star from './star';
 
 import { Router } from 'express';
-import { Config, Callback, MergeTags, Version, Package } from '@verdaccio/types';
+import { Config, Callback, MergeTags, Version, Package } from '@uino/verdaccio-types';
 import { IAuth, $ResponseExtend, $RequestExtend, $NextFunctionVer, IStorageHandler } from '../../../../types';
 import { logger } from '../../../lib/logger';
 import {isPublishablePackage} from "../../../lib/storage-utils";

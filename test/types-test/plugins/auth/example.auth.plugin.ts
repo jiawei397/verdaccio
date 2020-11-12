@@ -2,9 +2,9 @@
 
 import Config from '../../../../src/lib/config';
 import { logger } from '../../../../src/lib/logger';
-import { Callback } from '@verdaccio/types';
+import { Callback } from '@uino/verdaccio-types';
 
-import { Config as AppConfig, PackageAccess, IPluginAuth, RemoteUser, Logger, PluginOptions } from '@verdaccio/types';
+import { Config as AppConfig, PackageAccess, IPluginAuth, RemoteUser, Logger, PluginOptions } from '@uino/verdaccio-types';
 
 class ExampleAuthPlugin implements IPluginAuth<{}> {
   config: AppConfig;

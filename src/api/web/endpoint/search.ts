@@ -7,7 +7,7 @@ import Search from '../../../lib/search';
 import { DIST_TAGS } from '../../../lib/constants';
 import { Router } from 'express';
 import { IAuth, $ResponseExtend, $RequestExtend, $NextFunctionVer, IStorageHandler } from '../../../../types';
-import { Package } from '@verdaccio/types';
+import { Package } from '@uino/verdaccio-types';
 
 function addSearchWebApi(route: Router, storage: IStorageHandler, auth: IAuth): void {
   // Search package
