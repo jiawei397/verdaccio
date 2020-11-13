@@ -114,6 +114,7 @@
   ],
   "scripts": {
     "release": "standard-version -a -s",
+    "build": "npm run code:build",
     "prepublish": "in-publish && npm run code:build || not-in-publish",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
